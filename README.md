@@ -1,66 +1,227 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Library Management System
+Overview
+The Library Management System is a Laravel-based application designed to manage books, authors, and user borrowing activities. It provides functionalities for user registration, authentication, and CRUD operations for books and authors.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Table of Contents
+Installation
+Configuration
+API Endpoints
+Testing
+License
+Installation
+Clone the repository:
 
-## About Laravel
+bash
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+git clone https://github.com/your-username/library-management-system.git
+Navigate to the project directory:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+bash
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+cd library-management-system
+Install dependencies:
 
-## Learning Laravel
+bash
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+composer install
+Copy the example environment file:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+bash
+Копировать код
+cp .env.example .env
+Generate an application key:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+bash
+Копировать код
+php artisan key:generate
+Run migrations:
 
-## Laravel Sponsors
+bash
+Копировать код
+php artisan migrate
+Start the development server:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+bash
+Копировать код
+php artisan serve
+Configuration
+Database Configuration
 
-### Premium Partners
+Update the .env file with your database credentials:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+env
+Копировать код
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=library_management
+DB_USERNAME=root
+DB_PASSWORD=
+Mail Configuration
 
-## Contributing
+Configure your mail settings in the .env file:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+env
+Копировать код
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_username
+MAIL_PASSWORD=your_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=from@example.com
+MAIL_FROM_NAME="${APP_NAME}"
+API Endpoints
+Authentication
+Register User
 
-## Code of Conduct
+Endpoint: POST /register
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Request Body:
 
-## Security Vulnerabilities
+json
+Копировать код
+{
+    "name": "User Name",
+    "email": "user@example.com",
+    "password": "password",
+    "password_confirmation": "password"
+}
+Response:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+json
+Копировать код
+{
+    "token": "your_generated_token"
+}
+Login User
 
-## License
+Endpoint: POST /login
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Request Body:
+
+json
+Копировать код
+{
+    "email": "user@example.com",
+    "password": "password"
+}
+Response:
+
+json
+Копировать код
+{
+    "token": "your_generated_token"
+}
+Logout User
+
+Endpoint: POST /logout
+
+Headers:
+
+text
+Копировать код
+Authorization: Bearer your_generated_token
+Response: 204 No Content
+
+Books
+Create Book
+
+Endpoint: POST /books
+
+Request Body:
+
+json
+Копировать код
+{
+    "title": "Book Title",
+    "author_id": 1,
+    "isbn": "9780743273565",
+    "published_at": "1925-04-10",
+    "status": "available"
+}
+Response: 201 Created
+
+Get Books
+
+Endpoint: GET /books
+
+Query Parameters:
+
+search: Optional search term
+Response: Paginated list of books
+
+Update Book
+
+Endpoint: PUT /books/{id}
+
+Request Body:
+
+json
+Копировать код
+{
+    "title": "Updated Book Title",
+    "author_id": 1,
+    "isbn": "9780743273565",
+    "published_at": "1925-04-10",
+    "status": "available"
+}
+Response: 200 OK
+
+Delete Book
+
+Endpoint: DELETE /books/{id}
+Response: 204 No Content
+Authors
+Create Author
+
+Endpoint: POST /authors
+
+Request Body:
+
+json
+Копировать код
+{
+    "name": "Author Name",
+    "birthdate": "1980-01-01",
+    "bio": "Author biography."
+}
+Response: 201 Created
+
+Get Authors
+
+Endpoint: GET /authors
+Response: Paginated list of authors
+Update Author
+
+Endpoint: PUT /authors/{id}
+
+Request Body:
+
+json
+Копировать код
+{
+    "name": "Updated Author Name",
+    "birthdate": "1980-01-01",
+    "bio": "Updated biography."
+}
+Response: 200 OK
+
+Delete Author
+
+Endpoint: DELETE /authors/{id}
+Response: 204 No Content
+Testing
+Run Unit and Feature Tests:
+
+bash
+Копировать код
+php artisan test
+Ensure that your tests are passing and that any failing tests are debugged accordingly.
+
+Test Authentication and Registration:
+
+Use Postman or any API testing tool to test the registration and login endpoints, verifying that you receive the expected JSON responses and status codes.
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
